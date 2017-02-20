@@ -6,35 +6,30 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main {
+public class MainFixed {
 
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws IOException {
 
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 		File file = new File(classloader.getResource("Data.txt").getFile());
 
 		BufferedReader reader;
 		String line;
-		List<String> fileContent = new ArrayList<String>();
 		List<String> fileContentCut = new ArrayList<String>();
 
-		//TODO: this application fails with "java.lang.OutOfMemoryError: GC overhead limit exceeded" on -Xmx80000k
+		//TODO: this application fails with "java.lang.OutOfMemoryError: GC overhead limit exceeded" on -Xmx4096k
 
 		while (true) {
 
 			reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 			try {
 				while ((line = reader.readLine()) != null) {
-					fileContent.add(line);
+					fileContentCut.add(line.substring(0, 3));
 				}
 			} finally {
 				reader.close();
 			}
 
-			for (String string : fileContent) {
-				fileContentCut.add(string.substring(0, 3));
-			}
-			fileContent.clear();
 			fileContentCut.clear();
 		}
 	}
